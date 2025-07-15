@@ -1,0 +1,76 @@
+{{ template "head" . }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<nav aria-label="breadcrumb">
+  <ul>
+    <li><a href="/admin/polls">Polls</a></li>
+    <li>Create new livepoll</li>
+  </ul>
+</nav>
+
+
+
+
+
+<section class="py-5">
+
+
+                    <form method="post" role="form" id="createPollForm" >
+
+
+                        <div >
+                            <label for="title">Title</label>
+                            <input id="pollTitle" type="text" name="title" value="{{ .title }}" id="name" placeholder="Title for the poll" required />
+                            {{ range .errors.Title }}
+                                <span class="field-validation-error field-validation-error" data-valmsg-for="title" data-valmsg-replace="true">
+                                {{.}}</span>
+                            {{ end }}
+                        </div>
+                        <article>
+                                        <div id="questionsContainer" class="space-y-4">
+                <h2 class="text-2xl font-semibold mt-8 mb-4 text-gray-800">Questions</h2>
+                <!-- Question templates will be added here by JavaScript -->
+            </div>
+
+                <hr/><br/><br/>
+            <button type="button" onclick="addQuestion()"
+                    class="outline">
+                    Add Question
+    
+            </button>
+                        </article>
+
+
+
+
+
+
+                        <hr />
+
+
+                       <button role="button" class="outline" type="submit">Save poll</button>
+
+    
+                    </form>
+
+
+
+</section>
+
+    <script src="/assets/js/polladmin.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', ()=>addQuestion());
+
+        document.getElementById('createPollForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            await savePoll();
+        });
+
+    </script>
+
+
+
+
+
+{{ template "footer" . }}

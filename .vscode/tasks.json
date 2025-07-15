@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build go debug executable",
+            "type": "shell",
+            "command": "go build -o ${workspaceFolder}/debug_app.exe",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent",
+                "panel": "dedicated"
+            },
+            "problemMatcher": "$go"
+        }
+    ]
+}

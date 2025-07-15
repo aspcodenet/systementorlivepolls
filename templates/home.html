@@ -1,0 +1,45 @@
+{{ template "head" . }}
+
+
+<section>
+    <hgroup style="text-align:center;">
+        <h1>LivePolls</h1>
+        <h2></h2>
+        <p>Let us get to know you</p>
+    </hgroup>
+
+    <div class="grid">
+
+        <article class="grid2" >
+            <h2>Participant?</h2>
+            <p>
+            Enter your Poll id here
+            </p>
+            <form action="/poll" method="post">
+                <input type="text" name="poll_id" required>
+                <button type="submit">Enter poll</button>
+            </form>
+
+            <footer ><small>
+                <br />
+            </small></footer>
+        </article>        
+
+
+        <article class="grid2" >
+            <h2>Admin?</h2>
+            <p>
+                Login with your Github account and administer your polls and run them.
+            </p>
+
+            <footer ><small>
+                <br />
+            </small></footer>
+        </article>        
+    </div>
+</section>
+
+
+
+
+{{ template "footer" . }}

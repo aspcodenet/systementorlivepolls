@@ -1,0 +1,50 @@
+{{ template "head" . }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<nav aria-label="breadcrumb">
+  <ul>
+    <li><a href="/admin/polls">Polls</a></li>
+    <li>Controlpanel {{ .Poll.Title }}</li>
+  </ul>
+</nav>
+
+
+
+
+
+<section class="py-5">
+
+<article>
+    <p>Poll status:</p>
+    <p id="currentStatusText"></p>
+    <hr>
+</article>
+
+<article>
+            <button id="startButton" onclick="sendAdminAction('start')"
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out shadow-md">
+                Start Poll
+            </button>
+            <button id="nextButton" onclick="sendAdminAction('next')"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out shadow-md hidden">
+                Next Question
+            </button>
+            <button id="showResultsButton" onclick="sendAdminAction('show_results')"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out shadow-md hidden">
+                Show Results
+            </button>
+            <button id="doneButton" onclick="sendAdminAction('done')"
+                    class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out shadow-md hidden">
+                Done Poll
+            </button>
+
+</article>
+
+</section>
+
+<script src="/assets/js/controlpaneladmin.js"></script>
+
+
+
+
+{{ template "footer" . }}

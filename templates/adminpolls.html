@@ -1,0 +1,84 @@
+{{ template "head" . }}
+
+<nav aria-label="breadcrumb">
+  <ul>
+    <li>Polls</li>
+  </ul>
+</nav>
+
+
+<section class="color" >
+
+    <form method="get">
+        <!-- Search -->
+        <div class="grid">
+            <div>
+                <label for="q">Search</label>
+                <input type="search" placeholder="Search" id="q" name="q" value="{{ .q }}">
+            </div>
+        </div>
+
+    </form>
+
+
+    <table id="result">
+        <thead>
+        <tr>
+            <th scope="col" style="font-weight:bold">
+            Title
+            </th>
+            <th scope="col" style="font-weight:bold">
+                Status
+            </th>
+            <th scope="col" style="font-weight:bold">
+                Questions
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {{ range .Polls }}
+            <tr>
+                <td>{{.Title}}</td>
+                <td>
+                        <mark>{{.Status}}</mark>
+                </td>
+                <td>
+                        <mark>{{.Questions}}</mark>
+                </td>
+                <td>
+                    <a href="/admin/polls/edit/{{.ID}}" role="button" class="outline">Edit</a>
+
+                    <a href="/admin/polls/controlpanel/{{.ID}}" role="button" class="outline">Run Control panel</a>
+                </td>
+                <td>
+                        <a href="/admin/databases/delete/{{.ID}}" role="button" class="outline">Delete</a>
+
+                </td>
+            </tr>
+            {{ end }}
+        </tbody>
+
+    </table>
+    <p>
+                            <a href="/admin/polls/new" role="button" class="outline">New poll</a>
+
+    </p>
+
+</section>
+
+
+
+
+
+
+
+<script>
+        function refreshMe(){
+            document.location.href = '?Type=' + document.getElementById('Type').value + '&q=' + document.getElementById('q').value;
+        }
+</script>
+
+
+
+{{ template "footer" . }}

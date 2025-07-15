@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Compiled Go App",
+            "type": "go",
+            "request": "launch",
+            "mode": "exec", // Change mode to 'exec' to run a pre-compiled binary
+            "program": "${workspaceFolder}/debug_app.exe", // Point to the stable executable
+            "preLaunchTask": "build go debug executable" // Run the build task before launching
+        }
+    ]
+}

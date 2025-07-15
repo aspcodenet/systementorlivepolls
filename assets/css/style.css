@@ -1,0 +1,38 @@
+.field-validation-error {
+    display: block;
+    color: #ec3333;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    font-size: smaller;
+}
+
+
+.grid2 ul{
+    font-size: smaller;
+}
+
+
+.copy-icon {
+    background-color: none !important;
+    border-color: none !important;
+        cursor: pointer; /* Changes mouse cursor to a pointer when hovering over the icon */
+        padding: 5px; /* Adds a bit more clickable area */
+    }
+    .copy-icon:hover {
+    }
+
+
+button {
+    width: fit-content;
+ }    
+
+
+nav[aria-label="breadcrumb"] {
+    background-color: #181c25;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+nav[aria-label="breadcrumb"] > ul > li{
+    font-size: 30px;
+}
