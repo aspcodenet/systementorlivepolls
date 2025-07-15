@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const pollId = document.getElementById('pollIdDisplay').textContent;
+    // get last part of the URL to get the poll ID from the query parameters, e.g., /poll/1234567890
+    const pollId = window.location.pathname.split('/').filter(Boolean).pop();
+    console.log('Poll ID:', pollId);
+
     const ws = new WebSocket(`ws://${window.location.host}/ws/${pollId}?role=admin`);
 
-    const statusMessageDiv = document.getElementById('statusMessage');
     const currentStatusText = document.getElementById('currentStatusText');
     const questionSection = document.getElementById('questionSection');
     const currentQuestionText = document.getElementById('currentQuestionText');
@@ -20,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ws.onopen = (event) => {
         console.log('WebSocket connection opened:', event);
-        statusMessageDiv.classList.remove('hidden');
         currentStatusText.textContent = 'Connected to poll. Waiting for updates...';
     };
 
@@ -47,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ws.onclose = (event) => {
         console.log('WebSocket connection closed:', event);
         currentStatusText.textContent = 'Disconnected from poll. Please refresh.';
-        statusMessageDiv.classList.remove('hidden');
         startButton.classList.add('hidden');
         nextButton.classList.add('hidden');
         showResultsButton.classList.add('hidden');
@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ws.onerror = (error) => {
         console.error('WebSocket error:', error);
         currentStatusText.textContent = 'WebSocket error. Please check console.';
-        statusMessageDiv.classList.remove('hidden');
     };
 
     function updatePollState(message) {
@@ -151,11 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const optionText = currentQuestionOptionsMap.has(parseInt(optionId)) ? currentQuestionOptionsMap.get(parseInt(optionId)) : `Option ${optionId.substring(0, 8)}`;
 
             const voteItem = document.createElement('div');
-            voteItem.classList.add('mb-2');
             voteItem.innerHTML = `
-                <div class="flex justify-between items-center mb-1">
-                    <span class="text-gray-800 font-medium">${optionText}</span>
-                    <span class="text-gray-600">${count} votes</span>
+                <div class="votes-flex-container">
+                    <span>${optionText}</span>
+                    <span>${count} votes</span>
                 </div>
                 <div class="vote-bar-container">
                     <div class="vote-bar" style="width: ${totalVotes > 0 ? (count / totalVotes * 100) : 0}%"></div>

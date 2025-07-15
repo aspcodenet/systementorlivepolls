@@ -60,14 +60,16 @@ func AdminPollsSavePOST(c *gin.Context) {
 
 	var poll *data.Poll
 	if req.DatabaseId == 0 {
+		randString, _ := utils.RandString(16)
 		poll = &data.Poll{
 			Title:                req.Title,
 			CurrentQuestionIndex: -1, // No question active yet
 			Status:               "setup",
 			AdminUserID:          int(adminUser.ID),
+			InviteID:             randString,
 		}
 	} else {
-		poll, _ = data.GetPollWithDetails(req.DatabaseId)
+		poll, _ = data.GetPollAndDetailsForAdmin(req.DatabaseId)
 		poll.Title = req.Title
 
 	}
@@ -168,20 +170,14 @@ func AdminPollsControlPanel(c *gin.Context) {
 		return
 	}
 
-	pollID, err := strconv.Atoi(c.Param("pollID"))
+	pollID := c.Param("inviteID")
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	//Here read the poll inclusive questions and inclusive options
-	poll, err := data.GetPollWithDetails(uint(pollID))
-	err = data.DB.First(&poll, pollID).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		c.AbortWithStatus(http.StatusNotFound)
-		return
-	}
-
+	poll, err := data.GetPollWithDetails(pollID)
 	jsonData, _ := json.MarshalIndent(poll.Questions, "", "  ")
 
 	c.HTML(http.StatusOK, "adminpollscontrolpanel.html", gin.H{
@@ -218,12 +214,7 @@ func AdminPollsEdit(c *gin.Context) {
 	}
 
 	//Here read the poll inclusive questions and inclusive options
-	poll, err := data.GetPollWithDetails(uint(pollID))
-	err = data.DB.First(&poll, pollID).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		c.AbortWithStatus(http.StatusNotFound)
-		return
-	}
+	poll, err := data.GetPollAndDetailsForAdmin(uint(pollID))
 
 	jsonData, _ := json.MarshalIndent(poll.Questions, "", "  ")
 
@@ -281,7 +272,7 @@ func AdminPolls(c *gin.Context) {
 	}
 
 	dataObjects := []data.Poll{}
-	if err := data.DB.Where("admin_user_id = ?", adminUser.ID).Find(&dataObjects).Error; err != nil {
+	if err := data.DB.Where("admin_user_id = ?", adminUser.ID).Find(&dataObjects).Error; err != nil && err != gorm.ErrRecordNotFound {
 		c.AbortWithError(500, errors.New("Failed to retrieve polls"))
 		return
 	}

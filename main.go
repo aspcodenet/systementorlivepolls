@@ -74,9 +74,9 @@ func main() {
 	r.POST("/admin/polls/save", WebPageAuthRequired, pages.AdminPollsSavePOST)
 
 	r.GET("/admin/polls/edit/:pollID", WebPageAuthRequired, pages.AdminPollsEdit)
-	r.GET("/admin/polls/controlpanel/:pollID", WebPageAuthRequired, pages.AdminPollsControlPanel)
+	r.GET("/admin/polls/controlpanel/:inviteID", WebPageAuthRequired, pages.AdminPollsControlPanel)
 
-	r.GET("/ws/:pollID", handleWebSocket)
+	r.GET("/ws/:inviteID", handleWebSocket)
 
 	port := os.Getenv("PORT")
 	if port == "" {

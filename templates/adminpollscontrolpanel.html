@@ -1,40 +1,60 @@
 {{ template "head" . }}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<nav aria-label="breadcrumb">
-  <ul>
+<nav aria-label="breadcrumb"  >
+  <ul style="display: block;">
     <li><a href="/admin/polls">Polls</a></li>
     <li>Controlpanel {{ .Poll.Title }}</li>
   </ul>
 </nav>
+<small>
+  <p id="currentStatusText"></p>
+  </small>
+  
 
 
 
 
 
 <section class="py-5">
+        <article id="questionSection" class="mb-8 p-4 border rounded-lg bg-gray-50 hidden">
+            <header>Current Question:</header>
+            <h2 id="currentQuestionText"></h2>
+            <div id="currentQuestionOptions" class="space-y-2">
+                <!-- Options will be dynamically loaded here -->
+            </div>
+        </article>
+
+        <article id="realtimeResults" class="mb-8 p-4 border rounded-lg bg-green-50 hidden">
+            <h2 class="text-2xl font-semibold mb-3 text-green-700">Real-time Votes:</h2>
+            <div id="voteCounts" class="space-y-4">
+                <!-- Vote counts will be dynamically loaded here -->
+            </div>
+            <p class="text-lg font-bold mt-4 text-green-800">Total Votes: <span id="totalVotes">0</span></p>
+        </article>
+
+        <article id="finalResults" class="mb-8 p-4 border rounded-lg bg-purple-50 hidden">
+            <h2 class="text-2xl font-semibold mb-3 text-purple-700">Final Poll Results:</h2>
+            <div id="allPollResults" class="space-y-6">
+                <!-- Final results for all questions will be loaded here -->
+            </div>
+        </article>
+
+
+
 
 <article>
-    <p>Poll status:</p>
-    <p id="currentStatusText"></p>
-    <hr>
-</article>
 
-<article>
-            <button id="startButton" onclick="sendAdminAction('start')"
-                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out shadow-md">
+            <button id="startButton" onclick="sendAdminAction('start')">
                 Start Poll
             </button>
-            <button id="nextButton" onclick="sendAdminAction('next')"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out shadow-md hidden">
+            <button id="nextButton" onclick="sendAdminAction('next')">
                 Next Question
             </button>
-            <button id="showResultsButton" onclick="sendAdminAction('show_results')"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out shadow-md hidden">
+            <button id="showResultsButton" onclick="sendAdminAction('show_results')">
                 Show Results
             </button>
-            <button id="doneButton" onclick="sendAdminAction('done')"
-                    class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out shadow-md hidden">
+            <button id="doneButton" onclick="sendAdminAction('done')">
                 Done Poll
             </button>
 

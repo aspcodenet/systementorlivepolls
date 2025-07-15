@@ -24,8 +24,8 @@
 
 button {
     width: fit-content;
+    display:inline-block;
  }    
-
 
 nav[aria-label="breadcrumb"] {
     background-color: #181c25;
@@ -35,4 +35,32 @@ nav[aria-label="breadcrumb"] {
 }
 nav[aria-label="breadcrumb"] > ul > li{
     font-size: 30px;
+}
+
+
+.hidden{
+    display: none;
+}
+
+
+.vote-bar-container {
+    background-color: #e2e8f0; /* bg-gray-200 */
+    border-radius: 0.5rem;
+    overflow: hidden;
+    height: 2rem; /* h-8 */
+    margin-bottom: 0.5rem; /* mb-2 */
+}
+.vote-bar {
+    background-color: #4299e1; /* bg-blue-500 */
+    height: 100%;
+    border-radius: 0.5rem;
+    transition: width 0.5s ease-in-out;
+}
+
+.votes-flex-container {
+  display: flex; /* flex */
+  justify-content: space-between !important; /* justify-between */
+  align-items: center; /* items-center */
+  align-content: center;
+  margin-bottom: 0.25rem; /* mb-1 (1 unit in Tailwind's default spacing scale is 0.25rem or 4px) */
 }
