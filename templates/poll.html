@@ -1,0 +1,61 @@
+{{ template "head" . }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<nav aria-label="breadcrumb"  >
+  <ul style="display: block;">
+    <li>{{ .Poll.Title }}</li>
+  </ul>
+</nav>
+<small>
+  <p id="currentStatusText"></p>
+  </small>
+  
+
+
+
+
+
+<section class="py-5">
+        <article id="questionSection" class="hidden">
+            <header><h2 id="currentQuestionText"></h2></header>
+                <form id="voteForm" >
+                    <div id="questionOptions">
+                        <!-- Options will be dynamically loaded here -->
+                    </div>
+                    <button type="submit" id="submitVoteButton">
+                        Submit Vote
+                    </button>
+                </form>
+        </article>
+
+        <div id="resultsSection" class="hidden">
+            <h2 >Results for Current Question:</h2>
+            <div id="currentQuestionResults" >
+                <!-- Results for current question will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <div id="finalResultsSection" class="hidden">
+            <h2 >Final Poll Results:</h2>
+            <div id="allPollResults" >
+                <!-- Final results for all questions will be loaded here -->
+            </div>
+        </div>
+
+        <div id="pollFinishedSection" class="hidden">
+            <h2 >Poll Finished!</h2>
+            <p>Thank you for participating.</p>
+        </div>
+    </div>
+
+
+
+
+</section>
+
+<script src="/assets/js/poll.js"></script>
+
+
+
+
+{{ template "footer" . }}

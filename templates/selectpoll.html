@@ -1,0 +1,35 @@
+{{ template "head" . }}
+
+
+<section>
+    <hgroup style="text-align:center;">
+        <h1>LivePolls</h1>
+        <h2></h2>
+        <p>Let us get to know you</p>
+    </hgroup>
+
+    <div class="grid">
+
+        <article class="grid2" >
+            <h2>Enter poll</h2>
+            <p>
+            Poll doesn't exist? 
+            </p>
+            <form action="/selectpoll" method="post">
+                <input type="text" name="inviteID" value="{{ .inviteID }}" required>
+                <button type="submit">Enter poll</button>
+            </form>
+
+            <footer ><small>
+                <br />
+            </small></footer>
+        </article>        
+
+
+    </div>
+</section>
+
+
+
+
+{{ template "footer" . }}

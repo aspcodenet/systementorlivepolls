@@ -66,6 +66,8 @@ func main() {
 	r.LoadHTMLGlob("templates/**")
 
 	r.GET("/", pages.Start)
+	r.GET("/poll/:inviteID", pages.Poll)
+	r.POST("/selectpoll", pages.SelectPoll)
 	r.GET("/loginv1", pages.GithubLoginHandler)
 	r.GET("/login/oauth2/code/github", pages.GithubCallbackHandler)
 	r.GET("/logout", pages.Logout)

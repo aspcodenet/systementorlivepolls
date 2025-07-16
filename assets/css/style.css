@@ -1,3 +1,5 @@
+
+
 .field-validation-error {
     display: block;
     color: #ec3333;
@@ -63,4 +65,27 @@ nav[aria-label="breadcrumb"] > ul > li{
   align-items: center; /* items-center */
   align-content: center;
   margin-bottom: 0.25rem; /* mb-1 (1 unit in Tailwind's default spacing scale is 0.25rem or 4px) */
+}
+
+
+mark {
+    padding: 0;
+    background: linear-gradient(to right, rgb(215.4, 140.8, 210.2), rgb(184.5, 153, 237.75), rgb(156.6, 165.3, 232.6), rgb(142.75, 168.95, 240.05));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+article{
+    border: .0625rem solid rgb(28, 33, 43.5);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+article p{
+    color:#7b8495;
+}
+
+footer{
+    font-size: smaller;
 }

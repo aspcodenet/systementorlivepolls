@@ -178,6 +178,10 @@ func AdminPollsControlPanel(c *gin.Context) {
 
 	//Here read the poll inclusive questions and inclusive options
 	poll, err := data.GetPollWithDetails(pollID)
+	if poll.AdminUserID != int(adminUser.ID) {
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
 	jsonData, _ := json.MarshalIndent(poll.Questions, "", "  ")
 
 	c.HTML(http.StatusOK, "adminpollscontrolpanel.html", gin.H{
@@ -301,6 +305,9 @@ func AdminPolls(c *gin.Context) {
 
 func checkAdmin(currentUser string) bool {
 	adminsCSV := os.Getenv("ADMINS")
+	if adminsCSV == "" {
+		return true
+	}
 	adminEmails := strings.Split(adminsCSV, ",")
 	// Check if the current user's email is in the list of admins
 	for _, admin := range adminEmails {

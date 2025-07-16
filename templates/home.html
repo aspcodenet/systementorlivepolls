@@ -3,7 +3,7 @@
 
 <section>
     <hgroup style="text-align:center;">
-        <h1>LivePolls</h1>
+        <h1>Live<mark>Polls</mark></h1>
         <h2></h2>
         <p>Let us get to know you</p>
     </hgroup>
@@ -11,32 +11,43 @@
     <div class="grid">
 
         <article class="grid2" >
-            <h2>Participant?</h2>
+            <h3>Participant?</h3>
             <p>
             Enter your Poll id here
             </p>
-            <form action="/poll" method="post">
-                <input type="text" name="poll_id" required>
-                <button type="submit">Enter poll</button>
+            <form action="/selectpoll" method="post">
+                <input type="text" name="inviteID" required>
+                <button type="submit" class="outline">Enter poll</button>
             </form>
-
-            <footer ><small>
-                <br />
-            </small></footer>
         </article>        
 
 
-        <article class="grid2" >
-            <h2>Admin?</h2>
+        <article class="grid2">
+            <h3>What is this?</h3>
             <p>
-                Login with your Github account and administer your polls and run them.
+               Create and control live polls with LivePolls, a web application designed for real-time audience interaction. 
+            </p>
+            <p>
+               Your participants can vote instantly and view results as they happen.
             </p>
 
-            <footer ><small>
-                <br />
-            </small></footer>
         </article>        
+
+
     </div>
+            <article >
+            <h3>Use it <mark>for free!</mark></h3>
+            <p>
+                Sign up for a free account and start creating your own polls. You just need an Github account to use the app!
+            </p>
+            <p>
+                You are allowed three polls with a maximum of 10 questions per poll.
+            </p>
+            <p>
+                <a href="/loginv1" role="button">Login</a>
+            </p>
+        </article>
+
 </section>
 
 

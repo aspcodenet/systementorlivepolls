@@ -24,6 +24,43 @@ func Init(githubClientID, githubClientSecret string) {
 	GithubClientSecret = githubClientSecret
 }
 
+func Poll(c *gin.Context) {
+	pollIDStr := c.Param("inviteID")
+
+	err := data.DB.First(&data.Poll{}, "invite_id=?", pollIDStr).Error
+	if err == gorm.ErrRecordNotFound {
+		c.HTML(http.StatusNotFound, "selectpoll.html", gin.H{
+			"inviteID": pollIDStr,
+		})
+		return
+	} else if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	poll, err := data.GetPollWithDetails(pollIDStr)
+	jsonData, _ := json.MarshalIndent(poll.Questions, "", "  ")
+
+	c.HTML(http.StatusOK, "poll.html", gin.H{
+		"Poll":   poll,
+		"AsJson": string(jsonData),
+	})
+}
+
+func SelectPoll(c *gin.Context) {
+	pollIDStr := c.PostForm("inviteID")
+
+	err := data.DB.First(&data.Poll{}, "invite_id=?", pollIDStr).Error
+	if err == nil {
+		c.Redirect(302, "/poll/"+pollIDStr)
+		return
+	}
+
+	c.HTML(http.StatusOK, "selectpoll.html", gin.H{
+		"inviteID": pollIDStr,
+	})
+}
+
 func Start(c *gin.Context) {
 
 	session := sessions.Default(c)
