@@ -75,6 +75,9 @@ func main() {
 	r.GET("/admin/polls/new", WebPageAuthRequired, pages.AdminPollsNew)
 	r.POST("/admin/polls/save", WebPageAuthRequired, pages.AdminPollsSavePOST)
 
+	r.GET("/admin/polls/delete/:pollID", WebPageAuthRequired, pages.AdminPollsDelete)
+	r.POST("/admin/polls/delete/:pollID", WebPageAuthRequired, pages.AdminPollsDeletePOST)
+
 	r.GET("/admin/polls/edit/:pollID", WebPageAuthRequired, pages.AdminPollsEdit)
 	r.GET("/admin/polls/controlpanel/:inviteID", WebPageAuthRequired, pages.AdminPollsControlPanel)
 

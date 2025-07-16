@@ -1,0 +1,45 @@
+{{ template "head" .  }}
+
+<nav aria-label="breadcrumb">
+  <ul>
+    <li><a href="/admin/polls">Polls</a></li>
+    <li>Delete {{ .Poll.Title }}</li>
+  </ul>
+</nav>
+
+
+
+
+
+
+<section class="py-5">
+
+
+                    <form method="post" role="form">
+
+
+                        <div >
+                            <label for="name">Verify DELETION of database by entering the name of the poll</label>
+                            <input type="text" name="name" value="" id="name" placeholder="{{ .Poll.Title }}" />
+                            {{ range .errors.Name }}
+                                <span class="field-validation-error field-validation-error" data-valmsg-for="Name" data-valmsg-replace="true">
+                                {{.}}</span>
+                            {{ end }}
+                        </div>
+                       <button role="button" class="outline" type="submit">Delete</button>
+                       <a role="button" class="outline" href="/admin/polls">Back</a>
+
+    
+                    </form>
+
+
+
+</section>
+
+
+
+
+
+
+
+{{ template "footer" . }}

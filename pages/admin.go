@@ -192,6 +192,92 @@ func AdminPollsControlPanel(c *gin.Context) {
 
 }
 
+func AdminPollsDelete(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get(Userkey)
+	var currentUser = ""
+	if user != nil {
+		currentUser = user.(string)
+	}
+	if checkAdmin(currentUser) == false {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+	}
+
+	var adminUser data.AdminUser
+	err := data.DB.First(&adminUser, "email=?", currentUser).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		c.Redirect(302, "/")
+		return
+	}
+
+	pollID, err := strconv.Atoi(c.Param("pollID"))
+	if err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	//Here read the poll inclusive questions and inclusive options
+	poll, _ := data.GetPollAndDetailsForAdmin(uint(pollID))
+	if poll.AdminUserID != int(adminUser.ID) {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+		return
+	}
+
+	c.HTML(http.StatusOK, "adminpollsdelete.html", gin.H{
+		"AdminUser": adminUser,
+		"Poll":      poll,
+	})
+
+}
+
+func AdminPollsDeletePOST(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get(Userkey)
+	var currentUser = ""
+	if user != nil {
+		currentUser = user.(string)
+	}
+	if checkAdmin(currentUser) == false {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+	}
+
+	var adminUser data.AdminUser
+	err := data.DB.First(&adminUser, "email=?", currentUser).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		c.Redirect(302, "/")
+		return
+	}
+
+	pollID, err := strconv.Atoi(c.Param("pollID"))
+	if err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	//Here read the poll inclusive questions and inclusive options
+	poll, _ := data.GetPollAndDetailsForAdmin(uint(pollID))
+	if poll.AdminUserID != int(adminUser.ID) {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+		return
+	}
+
+	if poll.Title != c.PostForm("name") {
+		errors := make(map[string][]string)
+		errors["Name"] = append(errors["Name"], "Poll name does not match")
+		c.HTML(200, "adminpollsdelete.html", gin.H{
+			"title":       "Delete poll",
+			"CurrentUser": currentUser,
+			"Poll":        poll,
+			"errors":      errors,
+		})
+		return
+	}
+
+	data.DB.Delete(&poll)
+	c.Redirect(302, "/admin/polls")
+
+}
+
 func AdminPollsEdit(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get(Userkey)
@@ -219,6 +305,10 @@ func AdminPollsEdit(c *gin.Context) {
 
 	//Here read the poll inclusive questions and inclusive options
 	poll, err := data.GetPollAndDetailsForAdmin(uint(pollID))
+	if poll.AdminUserID != int(adminUser.ID) {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+		return
+	}
 
 	jsonData, _ := json.MarshalIndent(poll.Questions, "", "  ")
 
