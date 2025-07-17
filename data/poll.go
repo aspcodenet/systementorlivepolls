@@ -125,7 +125,7 @@ func GetPollWithDetails(inviteID string) (*Poll, error) {
 	err := DB.Preload("Questions.Options").First(poll, "invite_id=?", inviteID).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, fmt.Errorf("poll with Inviteid %d not found", inviteID)
+			return nil, fmt.Errorf("poll with Inviteid %s not found", inviteID)
 		}
 		return nil, fmt.Errorf("failed to retrieve poll and its questions/options: %w", err)
 	}

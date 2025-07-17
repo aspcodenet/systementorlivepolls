@@ -192,6 +192,108 @@ func AdminPollsControlPanel(c *gin.Context) {
 
 }
 
+func AdminPollsCopyPOST(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get(Userkey)
+	var currentUser = ""
+	if user != nil {
+		currentUser = user.(string)
+	}
+	if checkAdmin(currentUser) == false {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+	}
+
+	var adminUser data.AdminUser
+	err := data.DB.First(&adminUser, "email=?", currentUser).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		c.Redirect(302, "/")
+		return
+	}
+
+	pollID, err := strconv.Atoi(c.Param("pollID"))
+	if err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	//Here read the poll inclusive questions and inclusive options
+	poll, _ := data.GetPollAndDetailsForAdmin(uint(pollID))
+	if poll.AdminUserID != int(adminUser.ID) {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+		return
+	}
+
+	var count int64
+	data.DB.Model(&data.Poll{}).Where("admin_user_id = ?", adminUser.ID).Count(&count)
+	if count >= 5 {
+		c.HTML(http.StatusOK, "maxpolls.html", gin.H{
+			"AdminUser": adminUser,
+		})
+		return
+	}
+
+	//Here read the poll inclusive questions and inclusive options
+	poll, _ = data.GetPollAndDetailsForAdmin(uint(pollID))
+	if poll.AdminUserID != int(adminUser.ID) {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+		return
+	}
+	//Copy poll and all details to new poll
+	pollCopy := poll.DeepCopyWithoutID()
+	pollCopy.Title = "Copy of " + poll.Title
+
+	data.DB.Save(&pollCopy)
+	c.Redirect(302, "/admin/polls/edit/"+strconv.Itoa(int(pollCopy.ID)))
+
+}
+
+func AdminPollsCopy(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get(Userkey)
+	var currentUser = ""
+	if user != nil {
+		currentUser = user.(string)
+	}
+	if checkAdmin(currentUser) == false {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+	}
+
+	var adminUser data.AdminUser
+	err := data.DB.First(&adminUser, "email=?", currentUser).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		c.Redirect(302, "/")
+		return
+	}
+
+	pollID, err := strconv.Atoi(c.Param("pollID"))
+	if err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	//Here read the poll inclusive questions and inclusive options
+	poll, _ := data.GetPollAndDetailsForAdmin(uint(pollID))
+	if poll.AdminUserID != int(adminUser.ID) {
+		c.HTML(http.StatusOK, "noadmin.html", gin.H{})
+		return
+	}
+
+	var count int64
+	data.DB.Model(&data.Poll{}).Where("admin_user_id = ?", adminUser.ID).Count(&count)
+	if count >= 5 {
+		c.HTML(http.StatusOK, "maxpolls.html", gin.H{
+			"AdminUser": adminUser,
+		})
+		return
+	}
+
+	c.HTML(http.StatusOK, "adminpollscopy.html", gin.H{
+		"AdminUser": adminUser,
+		"Poll":      poll,
+	})
+
+}
+
 func AdminPollsDelete(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get(Userkey)
