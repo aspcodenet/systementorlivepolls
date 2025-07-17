@@ -11,13 +11,8 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
-	cors "github.com/rs/cors/wrapper/gin"
-
-	//	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
 )
-
-var secret = "qweew3eeeqw"
 
 func main() {
 	if err := godotenv.Load(); err != nil {
@@ -39,6 +34,7 @@ func main() {
 
 	r := gin.Default()
 
+	var secret = os.Getenv("SESSION_STORE_SECRET")
 	if os.Getenv("ADMIN_REDIS_SERVER") != "" {
 		store, _eee := redis.NewStore(10, "tcp", os.Getenv("ADMIN_REDIS_SERVER"), "", "", []byte(secret))
 		if _eee != nil {
@@ -50,14 +46,6 @@ func main() {
 		store := cookie.NewStore([]byte(secret))
 		r.Use(sessions.Sessions("mysession", store))
 	}
-
-	corsConfig := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-		AllowedHeaders:   []string{"Origin", "Content-Type"},
-		AllowCredentials: true,
-	})
-	r.Use(corsConfig)
 
 	r.Static("/assets/img", "assets/img")
 	r.Static("/assets/js", "assets/js")
